@@ -20,14 +20,18 @@ const demoSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    age: {
-        type: Number
-    },
-    salary: {
-        type: Number
-    },
+    // age: {
+    //     type: Number
+    // },
+    // salary: {
+    //     type: Number
+    // },
     email: {
         type: String,
+        required: true
+    },
+    phone: {
+        type: Number,
         required: true
     }
 })
@@ -68,11 +72,12 @@ app.post('/create', async (req, res) => {
     const body = req.body;
 
     const name = body.name;
-    const age = body.age;
-    const salary = body.salary;
+    // const age = body.age;
+    // const salary = body.salary;
     const email = body.email;
+    const phone = body.phone;
 
-    const insertedUser = await user.create({name: name, age: age, salary: salary, email: email})
+    const insertedUser = await user.create({name: name, email: email, phone: phone})
 
     res.json({msg: "User inserted successfully", data: insertedUser})
 })
