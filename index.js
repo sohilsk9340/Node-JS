@@ -1,17 +1,31 @@
-
 require('dotenv').config();
 const bodyParser = require('body-parser');
 const express = require('express');
 const { default: mongoose } = require('mongoose');
+const cors = require('cors')
 const app = express()
 
+const PORT = process.env.PORT || 3000;
 const conn = process.env.CONN;
 
+const allowCrossDomain = (req, res, next) => {
+    res.header(`Access-Control-Allow-Origin`, `*`);
+    res.header(`Access-Control-Allow-Methods`, `GET,PUT,POST,DELETE`);
+    res.header(`Access-Control-Allow-Headers`, `Content-Type`);
+    next();
+};
+
+app.use(cors())
+app.use(allowCrossDomain)
+app.options('*', cors())
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
 
 mongoose.connect(conn)
         .then(() => console.log('connected'))
         .catch(() => console.log('Error'))
+    
+    // create a user --> temp
 
 const demoSchema = new mongoose.Schema({
     name: {
@@ -75,6 +89,10 @@ app.post('/create', async (req, res) => {
     res.json({msg: "User inserted successfully", data: insertedUser})
 })
 
+app.get('/count', async (req, res) =>{
+    res.json({count: await user.countDocuments()})
+})
+
 app.get('/id/:name', async (req, res) => {
     const name = req.params.name;
 
@@ -85,4 +103,4 @@ app.get('/id/:name', async (req, res) => {
 
 
 // http://localhost:8080/
-app.listen(8081, () => console.log("Application started"))
+app.listen(PORT, () => console.log("Application started on PORT " + PORT))
