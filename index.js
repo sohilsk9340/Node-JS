@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 const conn = process.env.CONN;
 
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
 
 mongoose.connect(conn)
         .then(() => console.log('connected'))
@@ -55,7 +56,7 @@ app.post("/login", (req, res) => {
     const username = body.username;
     const pass = body.pass;
 
-    if(username === "aryan" && pass === 123)
+    if(username === "sohil" && pass === 123)
         res.json({
             data: "success",
         })
